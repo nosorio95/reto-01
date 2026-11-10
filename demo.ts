@@ -1,13 +1,14 @@
 import {
-  generar_formulario
+  simular_envio
 } from "./src/tools/proveedor";
 
 async function main() {
 
   const resultado =
-    await generar_formulario.execute(
+    await simular_envio.execute(
       {
-        caso: "co-industrias-delta"
+        caso: "co-industrias-delta",
+        confirmado: true
       },
       {
         directory: process.cwd(),
@@ -15,7 +16,13 @@ async function main() {
       }
     );
 
-  console.log(resultado);
+  console.log(
+    JSON.stringify(
+      JSON.parse(resultado),
+      null,
+      2
+    )
+  );
 
 }
 
