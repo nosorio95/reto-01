@@ -48,7 +48,7 @@ async function sendMessage() {
 
     const response =
       await fetch(
-        "http://localhost:3000/api/chat",
+        "https://reto-01-backend.onrender.com/api/chat"
         {
           method: "POST",
           headers: {
