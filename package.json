@@ -1,0 +1,38 @@
+{
+  "name": "reto-01",
+  "version": "1.0.0",
+  "description": "reto-01",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nosorio95/reto-01.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nosorio95/reto-01/issues"
+  },
+  "homepage": "https://github.com/nosorio95/reto-01#readme",
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "openai": "^7.55.0",
+    "pdfkit": "^0.20.2",
+    "uuid": "^14.0.3",
+    "xlsx": "^0.18.5",
+    "zod": "^4.6.7"
+  }
+}
