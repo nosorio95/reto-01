@@ -1,0 +1,14 @@
+{
+  "id": "ec-corp-andina",
+  "de": "proveedores@corpandina-ficticia.ec",
+  "para": "recepcion@periferia-ficticia.com",
+  "asunto": "Calificación de proveedores - Formulario PDF",
+  "fecha": "2026-08-27",
+  "pais": "EC",
+  "cliente": "Corporación Andina de Servicios S.A.",
+  "formato": "pdf",
+  "cuerpo": "Formulario PDF",
+  "adjuntos": [
+    "Formulario_Calificacion_2026.pdf"
+  ]
+}

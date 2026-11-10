@@ -1,0 +1,18 @@
+[
+  {
+    "etiqueta": "Nombre de la empresa",
+    "obligatorio": true
+  },
+  {
+    "etiqueta": "RUC",
+    "obligatorio": true
+  },
+  {
+    "etiqueta": "Domicilio fiscal",
+    "obligatorio": true
+  },
+  {
+    "etiqueta": "Ciudad",
+    "obligatorio": true
+  }
+]

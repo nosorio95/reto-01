@@ -1,0 +1,10 @@
+[
+  {
+    "etiqueta": "Nombre o razón social del proveedor",
+    "obligatorio": true
+  },
+  {
+    "etiqueta": "RUC",
+    "obligatorio": true
+  }
+]
