@@ -48,7 +48,7 @@ async function sendMessage() {
 
     const response =
       await fetch(
-        "https://reto-01-backend.onrender.com/api/chat"
+        "https://reto-01-backend.onrender.com/api/chat",
         {
           method: "POST",
           headers: {
@@ -76,8 +76,7 @@ async function sendMessage() {
             tool => {
 
               if (
-                typeof tool ===
-                "string"
+                typeof tool === "string"
               ) {
                 return tool;
               }
