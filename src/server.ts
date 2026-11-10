@@ -13,6 +13,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send(
+    "Backend Registro Proveedor funcionando"
+  );
+});
+
 app.get("/api/health", (req, res) => {
   res.json({
     ok: true,
@@ -53,7 +59,7 @@ app.post(
 
         return res.json({
           reply:
-            "No fue posible leer la solicitud.",
+            "❌ No fue posible leer la solicitud.",
           toolCalls: [],
           needsConfirmation:
             false
@@ -108,21 +114,21 @@ app.post(
       res.json({
 
         reply:
-`Cliente: ${solicitud.data.cliente}
+`📋 Cliente: ${solicitud.data.cliente}
 
-País: ${solicitud.data.pais}
+🌎 País: ${solicitud.data.pais}
 
-Formato: ${solicitud.data.formato}
+📄 Formato: ${solicitud.data.formato}
 
-Campos llenos: ${mapeo.data.llenos.length}
+✅ Campos llenos: ${mapeo.data.llenos.length}
 
-Campos faltantes: ${mapeo.data.faltantes.length}
+⚠️ Campos faltantes: ${mapeo.data.faltantes.length}
 
-Formulario generado:
-${formulario.data.ruta}
+📁 Formulario generado correctamente
 
-Paquete listo para firma:
-${paquete.data.listo_para_firma}
+📦 Paquete documental generado
+
+✅ Listo para firma: ${paquete.data.listo_para_firma}
 `,
 
         toolCalls: [
@@ -140,7 +146,8 @@ ${paquete.data.listo_para_firma}
     } catch (error) {
 
       res.json({
-        reply: String(error),
+        reply:
+          `❌ Error: ${String(error)}`,
         toolCalls: [],
         needsConfirmation:
           false
