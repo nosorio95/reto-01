@@ -1,19 +1,20 @@
 {
   "name": "reto-01",
   "version": "1.0.0",
-  "description": "reto-01",
+  "description": "Reto técnico Periferia - Registro como proveedor",
   "main": "index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "tsx src/server.ts",
+    "demo": "tsx demo.ts"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nosorio95/reto-01.git"
+    "url": "https://github.com/nosorio95/reto-01.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nestor Osorio",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/nosorio95/reto-01/issues"
   },

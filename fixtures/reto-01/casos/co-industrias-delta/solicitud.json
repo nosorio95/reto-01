@@ -1,0 +1,14 @@
+{
+  "id": "co-industrias-delta",
+  "de": "compras@industrias-delta-ficticia.com",
+  "para": "recepcion@periferia-ficticia.com",
+  "asunto": "Solicitud de registro como proveedor - Periferia IT Group",
+  "fecha": "2026-08-25",
+  "pais": "CO",
+  "cliente": "Industrias Delta S.A.S.",
+  "formato": "xlsx",
+  "cuerpo": "Buenos días. Para continuar con la creación de Periferia como proveedor en nuestro sistema.",
+  "adjuntos": [
+    "Formato_Proveedores_v3.xlsx"
+  ]
+}

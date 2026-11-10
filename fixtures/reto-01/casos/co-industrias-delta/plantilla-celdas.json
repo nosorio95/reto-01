@@ -1,0 +1,26 @@
+[
+  {
+    "hoja": "Datos Proveedor",
+    "celda_etiqueta": "B3",
+    "etiqueta": "Razón social",
+    "celda_valor": "C3"
+  },
+  {
+    "hoja": "Datos Proveedor",
+    "celda_etiqueta": "B4",
+    "etiqueta": "NIT",
+    "celda_valor": "C4"
+  },
+  {
+    "hoja": "Datos Proveedor",
+    "celda_etiqueta": "B5",
+    "etiqueta": "Dirección",
+    "celda_valor": "C5"
+  },
+  {
+    "hoja": "Datos Bancarios",
+    "celda_etiqueta": "B3",
+    "etiqueta": "Banco",
+    "celda_valor": "C3"
+  }
+]

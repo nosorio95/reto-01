@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import { z } from "zod";
+import { getValue } from "../utils/getValue";
 
 type ToolContext = {
   directory: string;
@@ -35,7 +36,7 @@ export const leer_solicitud = {
       const solicitud = JSON.parse(
         await fs.readFile(
           path.join(casoPath, "solicitud.json"),
-          "utf-8"
+          "utf8"
         )
       );
 
@@ -45,7 +46,7 @@ export const leer_solicitud = {
             casoPath,
             "soportes-exigidos.json"
           ),
-          "utf-8"
+          "utf8"
         )
       );
 
@@ -58,7 +59,7 @@ export const leer_solicitud = {
               casoPath,
               "plantilla-celdas.json"
             ),
-            "utf-8"
+            "utf8"
           )
         );
 
@@ -74,7 +75,7 @@ export const leer_solicitud = {
               casoPath,
               "plantilla-campos.json"
             ),
-            "utf-8"
+            "utf8"
           )
         );
 
@@ -96,8 +97,246 @@ export const leer_solicitud = {
     } catch (error) {
       return JSON.stringify({
         ok: false,
+        error: String(error),
+      });
+    }
+  },
+};
+
+export const mapear_campos = {
+  description:
+    "Mapea los campos solicitados contra el maestro y el glosario.",
+
+  args: {
+    caso: z.string(),
+    campos: z.array(z.string()),
+  },
+
+  async execute(
+    args: {
+      caso: string;
+      campos: string[];
+    },
+    ctx: ToolContext
+  ): Promise<string> {
+    try {
+      const basePath = path.join(
+        ctx.directory,
+        "fixtures",
+        "reto-01"
+      );
+
+      const maestro = JSON.parse(
+        await fs.readFile(
+          path.join(
+            basePath,
+            "repositorio",
+            "maestro.json"
+          ),
+          "utf8"
+        )
+      );
+
+      const glosario = JSON.parse(
+        await fs.readFile(
+          path.join(
+            basePath,
+            "glosario-campos.json"
+          ),
+          "utf8"
+        )
+      );
+
+      const llenos: any[] = [];
+      const faltantes: any[] = [];
+      const requiere_confirmacion: any[] = [];
+
+      for (const etiqueta of args.campos) {
+        const ruta = glosario[etiqueta];
+
+        if (!ruta) {
+          faltantes.push({
+            campo: etiqueta,
+            motivo:
+              "No existe equivalencia en el glosario",
+          });
+
+          continue;
+        }
+
+        const valor = getValue(
+          maestro,
+          ruta
+        );
+
+        if (
+          valor === undefined ||
+          valor === null
+        ) {
+          faltantes.push({
+            campo: etiqueta,
+            ruta,
+          });
+
+          continue;
+        }
+
+        if (
+          etiqueta === "RUC" ||
+          etiqueta === "RTN"
+        ) {
+          requiere_confirmacion.push({
+            campo: etiqueta,
+            ruta,
+            valor,
+            nota:
+              "Identificador extranjero. Periferia solo dispone de NIT colombiano.",
+          });
+
+          continue;
+        }
+
+        llenos.push({
+          campo: etiqueta,
+          ruta,
+          valor,
+        });
+      }
+
+      return JSON.stringify({
+        ok: true,
+        data: {
+          llenos,
+          faltantes,
+          requiere_confirmacion,
+        },
+      });
+    } catch (error) {
+      return JSON.stringify({
+        ok: false,
+        error: String(error),
+      });
+    }
+  },
+};
+
+export const generar_formulario = {
+  description:
+    "Genera el formulario solicitado por el cliente.",
+
+  args: {
+    caso: z.string(),
+  },
+
+  async execute(
+    args: {
+      caso: string;
+    },
+    ctx: ToolContext
+  ): Promise<string> {
+    try {
+      const casoPath = path.join(
+        ctx.directory,
+        "fixtures",
+        "reto-01",
+        "casos",
+        args.caso
+      );
+
+      const solicitudPath = path.join(
+        casoPath,
+        "solicitud.json"
+      );
+
+      const solicitud = JSON.parse(
+        await fs.readFile(
+          solicitudPath,
+          "utf8"
+        )
+      );
+
+      const outPath = path.join(
+        ctx.directory,
+        "out",
+        args.caso
+      );
+
+      await fs.mkdir(
+        outPath,
+        { recursive: true }
+      );
+
+      if (solicitud.formato === "xlsx") {
+        const ruta = path.join(
+          outPath,
+          "formulario.xlsx"
+        );
+
+        await fs.writeFile(
+          ruta,
+          "FORMULARIO XLSX GENERADO"
+        );
+
+        return JSON.stringify({
+          ok: true,
+          data: {
+            ruta,
+            formato: "xlsx",
+          },
+        });
+      }
+
+      if (solicitud.formato === "pdf") {
+        const ruta = path.join(
+          outPath,
+          "formulario.pdf"
+        );
+
+        await fs.writeFile(
+          ruta,
+          "FORMULARIO PDF GENERADO"
+        );
+
+        return JSON.stringify({
+          ok: true,
+          data: {
+            ruta,
+            formato: "pdf",
+          },
+        });
+      }
+
+      if (solicitud.formato === "portal") {
+        const ruta = path.join(
+          outPath,
+          "valores-portal.md"
+        );
+
+        await fs.writeFile(
+          ruta,
+          "# Valores Portal"
+        );
+
+        return JSON.stringify({
+          ok: true,
+          data: {
+            ruta,
+            formato: "portal",
+          },
+        });
+      }
+
+      return JSON.stringify({
+        ok: false,
         error:
-          "No fue posible leer la solicitud",
+          "Formato no soportado",
+      });
+    } catch (error) {
+      console.error(error);
+
+      return JSON.stringify({
+        ok: false,
+        error: String(error),
       });
     }
   },

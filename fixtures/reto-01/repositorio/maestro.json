@@ -1,0 +1,22 @@
+{
+  "razon_social": "Periferia IT Group S.A.S.",
+  "tipo_sociedad": "Sociedad por Acciones Simplificada",
+  "nit": "900123456",
+  "digito_verificacion": "7",
+  "pais": "CO",
+  "ciudad": "Medellín",
+  "departamento": "Antioquia",
+  "direccion": "Calle 10 # 43A-25, Oficina 501",
+  "codigo_postal": "050021",
+  "telefono": "+57 604 555 0100",
+  "fecha_constitucion": "2008-03-14",
+
+  "banco": {
+    "nombre": "Bancolombia S.A.",
+    "tipo_cuenta": "Ahorros",
+    "numero_cuenta": "03100012345",
+    "titular": "Periferia IT Group S.A.S.",
+    "swift": "COLOCOBM",
+    "moneda": "COP"
+  }
+}
