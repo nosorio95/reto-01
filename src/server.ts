@@ -21,93 +21,94 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.post("/api/chat", async (req, res) => {
+app.post(
+  "/api/chat",
+  async (req, res) => {
 
-  try {
+    try {
 
-    const {
-      sessionId,
-      message
-    } = req.body;
+      const {
+        sessionId,
+        message
+      } = req.body;
 
-    const caso =
-      message.trim();
+      const caso =
+        message.trim();
 
-    const solicitud =
-      JSON.parse(
-        await leer_solicitud.execute(
-          {
-            caso
-          },
-          {
-            directory:
-              process.cwd(),
-            sessionId
-          }
-        )
-      );
+      const solicitud =
+        JSON.parse(
+          await leer_solicitud.execute(
+            {
+              caso
+            },
+            {
+              directory:
+                process.cwd(),
+              sessionId
+            }
+          )
+        );
 
-    if (!solicitud.ok) {
+      if (!solicitud.ok) {
 
-      return res.json({
+        return res.json({
+          reply:
+            "No fue posible leer la solicitud.",
+          toolCalls: [],
+          needsConfirmation:
+            false
+        });
+
+      }
+
+      const mapeo =
+        JSON.parse(
+          await mapear_campos.execute(
+            {
+              caso,
+              campos:
+                solicitud.data.campos
+            },
+            {
+              directory:
+                process.cwd(),
+              sessionId
+            }
+          )
+        );
+
+      const formulario =
+        JSON.parse(
+          await generar_formulario.execute(
+            {
+              caso
+            },
+            {
+              directory:
+                process.cwd(),
+              sessionId
+            }
+          )
+        );
+
+      const paquete =
+        JSON.parse(
+          await armar_paquete.execute(
+            {
+              caso
+            },
+            {
+              directory:
+                process.cwd(),
+              sessionId
+            }
+          )
+        );
+
+      res.json({
+
         reply:
-          "No fue posible leer la solicitud.",
-        toolCalls: [],
-        needsConfirmation:
-          false
-      });
-
-    }
-
-    const mapeo =
-      JSON.parse(
-        await mapear_campos.execute(
-          {
-            caso,
-            campos:
-              solicitud.data.campos
-          },
-          {
-            directory:
-              process.cwd(),
-            sessionId
-          }
-        )
-      );
-
-    const formulario =
-      JSON.parse(
-        await generar_formulario.execute(
-          {
-            caso
-          },
-          {
-            directory:
-              process.cwd(),
-            sessionId
-          }
-        )
-      );
-
-    const paquete =
-      JSON.parse(
-        await armar_paquete.execute(
-          {
-            caso
-          },
-          {
-            directory:
-              process.cwd(),
-            sessionId
-          }
-        )
-      );
-
-    res.json({
-
-      reply:
-`
-Cliente: ${solicitud.data.cliente}
+`Cliente: ${solicitud.data.cliente}
 
 País: ${solicitud.data.pais}
 
@@ -117,54 +118,42 @@ Campos llenos: ${mapeo.data.llenos.length}
 
 Campos faltantes: ${mapeo.data.faltantes.length}
 
-Formulario generado: ${formulario.data.ruta}
+Formulario generado:
+${formulario.data.ruta}
 
-Paquete listo para firma: ${paquete.data.listo_para_firma}
+Paquete listo para firma:
+${paquete.data.listo_para_firma}
 `,
 
-      toolCalls: [
-        {
-          name: "leer_solicitud",
-          status: "ok"
-        },
-        {
-          name: "mapear_campos",
-          status: "ok"
-        },
-        {
-          name: "generar_formulario",
-          status: "ok"
-        },
-        {
-          name: "armar_paquete",
-          status: "ok"
-        }
-      ],
+        toolCalls: [
+          "leer_solicitud",
+          "mapear_campos",
+          "generar_formulario",
+          "armar_paquete"
+        ],
 
-      needsConfirmation:
-        false
+        needsConfirmation:
+          false
 
-    });
+      });
 
-  } catch (error) {
+    } catch (error) {
 
-    res.json({
-      reply: String(error),
-      toolCalls: [],
-      needsConfirmation:
-        false
-    });
+      res.json({
+        reply: String(error),
+        toolCalls: [],
+        needsConfirmation:
+          false
+      });
+
+    }
 
   }
-
-});
+);
 
 app.get(
   "/api/sessions/:id",
-  (
-    req,
-    res
-  ) => {
+  (req, res) => {
 
     res.json({
       sessionId:
@@ -175,12 +164,17 @@ app.get(
   }
 );
 
+const PORT =
+  Number(
+    process.env.PORT
+  ) || 3000;
+
 app.listen(
   PORT,
   () => {
 
     console.log(
-      "Servidor iniciado en puerto ${PORT}`
+      `Servidor iniciado en puerto ${PORT}`
     );
 
   }
